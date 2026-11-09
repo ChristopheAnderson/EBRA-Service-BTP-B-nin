@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { PROJECTS_LIST, type ProjectItem } from '../data/content';
-import { Eye, MapPin, Calendar, Maximize2, X, Check, Building, Layers } from 'lucide-react';
+import { Eye, MapPin, Calendar, Maximize2, X, Check, Building, ArrowRight } from 'lucide-react';
 import { TiltCard } from './TiltCard';
 import { TextReveal } from './TextReveal';
 
-export const ProjectsShowcase: React.FC = () => {
+interface ProjectsShowcaseProps {
+  onOpenQuoteWithService?: (serviceName: string) => void;
+}
+
+export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onOpenQuoteWithService }) => {
   const [activeFilter, setActiveFilter] = useState<string>('all');
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
 
@@ -150,96 +154,130 @@ export const ProjectsShowcase: React.FC = () => {
 
       </div>
 
-      {/* Modal Lightbox détails projet */}
+      {/* Modal Lightbox détails projet — Retouché Grand Format PC */}
       {selectedProject && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative w-full max-w-3xl bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-200 text-left">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto">
+          <div className="relative w-full max-w-5xl bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-200 text-left my-auto max-h-[92vh] flex flex-col lg:flex-row">
             
             {/* Bouton Fermer */}
             <button
               onClick={() => setSelectedProject(null)}
-              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/90 text-[#151515] flex items-center justify-center shadow-lg hover:bg-[#E87524] hover:text-white transition-colors cursor-pointer"
+              className="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-white/95 text-[#151515] flex items-center justify-center shadow-xl hover:bg-[#E87524] hover:text-white transition-colors cursor-pointer"
               aria-label="Fermer"
             >
               <X className="w-5 h-5" />
             </button>
 
-            {/* Grande Image */}
-            <div className="relative h-72 sm:h-80 w-full overflow-hidden">
+            {/* Volet Gauche PC (55%) : Grande Image Immersion */}
+            <div className="w-full lg:w-[55%] relative h-72 sm:h-96 lg:h-auto min-h-[320px] lg:min-h-[500px] overflow-hidden shrink-0 bg-[#151515]">
               <img
                 src={selectedProject.image}
                 alt={selectedProject.title}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-6">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent flex flex-col justify-between p-6 sm:p-8">
                 <div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#E87524] px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-md inline-block mb-2">
+                  <span className="text-xs font-extrabold uppercase tracking-wider text-[#E87524] px-3 py-1 rounded-full bg-black/70 backdrop-blur-md inline-block border border-gray-700">
                     {selectedProject.categoryLabel}
                   </span>
-                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white font-display">
+                </div>
+                <div>
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white font-display mb-1">
                     {selectedProject.title}
                   </h3>
-                </div>
-              </div>
-            </div>
-
-            {/* Détails du projet */}
-            <div className="p-6 sm:p-8 space-y-6">
-              <div className="grid grid-cols-3 gap-4 pb-6 border-b border-gray-100">
-                <div>
-                  <span className="text-[11px] font-semibold text-[#6C757D] uppercase">Localisation</span>
-                  <p className="text-sm font-bold text-[#151515] flex items-center gap-1 mt-0.5">
+                  <p className="text-xs text-gray-300 flex items-center gap-1.5 font-semibold">
                     <MapPin className="w-3.5 h-3.5 text-[#E87524]" />
                     {selectedProject.location}
                   </p>
                 </div>
+              </div>
+            </div>
+
+            {/* Volet Droit PC (45%) : Panneau Technique & Spécifications */}
+            <div className="w-full lg:w-[45%] p-6 sm:p-8 overflow-y-auto max-h-[85vh] lg:max-h-[92vh] flex flex-col justify-between space-y-6">
+              
+              <div className="space-y-6">
                 <div>
-                  <span className="text-[11px] font-semibold text-[#6C757D] uppercase">Envergure</span>
-                  <p className="text-sm font-bold text-[#151515] flex items-center gap-1 mt-0.5">
-                    <Layers className="w-3.5 h-3.5 text-[#E87524]" />
-                    {selectedProject.surface || 'Projet complet'}
+                  <span className="text-[11px] font-bold text-[#E87524] uppercase tracking-wider block mb-1">
+                    Fiche Technique Officielle
+                  </span>
+                  <h4 className="text-xl font-extrabold text-[#151515] font-display">
+                    Spécifications de l'Ouvrage
+                  </h4>
+                </div>
+
+                {/* Métadonnées en 3 blocs */}
+                <div className="grid grid-cols-3 gap-3 p-4 rounded-2xl bg-[#F8F9FA] border border-gray-200/80">
+                  <div>
+                    <span className="text-[10px] font-bold text-[#6C757D] uppercase block">Localisation</span>
+                    <p className="text-xs font-bold text-[#151515] mt-0.5 truncate">
+                      {selectedProject.location.split('—')[0]}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold text-[#6C757D] uppercase block">Envergure</span>
+                    <p className="text-xs font-bold text-[#151515] mt-0.5 truncate">
+                      {selectedProject.surface || 'TCE'}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold text-[#6C757D] uppercase block">Année</span>
+                    <p className="text-xs font-bold text-[#151515] mt-0.5">
+                      {selectedProject.year}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Descriptif des travaux */}
+                <div>
+                  <h5 className="text-xs font-bold text-[#151515] uppercase tracking-wider mb-2">
+                    Descriptif des Travaux Menés :
+                  </h5>
+                  <p className="text-sm text-[#5A6065] leading-relaxed">
+                    {selectedProject.description}
                   </p>
                 </div>
+
+                {/* Points techniques remarquables */}
                 <div>
-                  <span className="text-[11px] font-semibold text-[#6C757D] uppercase">Année</span>
-                  <p className="text-sm font-bold text-[#151515] flex items-center gap-1 mt-0.5">
-                    <Calendar className="w-3.5 h-3.5 text-[#E87524]" />
-                    {selectedProject.year}
-                  </p>
+                  <h5 className="text-xs font-bold text-[#151515] uppercase tracking-wider mb-2.5">
+                    Exigences & Normes Appliquées :
+                  </h5>
+                  <div className="space-y-2">
+                    {selectedProject.highlights.map((h, i) => (
+                      <div key={i} className="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F8F9FA] border border-gray-200/70 text-xs font-bold text-[#151515]">
+                        <Check className="w-4 h-4 text-[#E87524] shrink-0" />
+                        <span>{h}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              <div>
-                <h4 className="text-xs font-bold text-[#151515] uppercase tracking-wider mb-2">
-                  Descriptif des travaux
-                </h4>
-                <p className="text-sm text-[#5A6065] leading-relaxed">
-                  {selectedProject.description}
-                </p>
-              </div>
+              {/* Actions : Chiffrer un projet similaire */}
+              <div className="pt-4 border-t border-gray-100 flex flex-col gap-2">
+                <button
+                  onClick={() => {
+                    const title = selectedProject.title;
+                    setSelectedProject(null);
+                    if (onOpenQuoteWithService) {
+                      onOpenQuoteWithService(title);
+                    }
+                  }}
+                  className="w-full py-3.5 rounded-xl bg-[#E87524] hover:bg-[#D36215] text-white font-bold text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-lg shadow-[#E87524]/20 cursor-pointer"
+                >
+                  <span>Chiffrer un projet similaire</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
 
-              <div>
-                <h4 className="text-xs font-bold text-[#151515] uppercase tracking-wider mb-2">
-                  Points techniques notables
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  {selectedProject.highlights.map((h, i) => (
-                    <div key={i} className="flex items-center gap-2 p-3 rounded-xl bg-[#F8F9FA] border border-gray-200/80 text-xs font-bold text-[#151515]">
-                      <Check className="w-4 h-4 text-[#E87524] shrink-0" />
-                      <span>{h}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="pt-2">
                 <button
                   onClick={() => setSelectedProject(null)}
-                  className="w-full py-4 rounded-xl bg-[#151515] hover:bg-[#E87524] text-white font-bold text-sm transition-all duration-300 cursor-pointer text-center shadow-md"
+                  className="w-full py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-[#151515] font-bold text-xs transition-colors cursor-pointer text-center"
                 >
                   Fermer la vue
                 </button>
               </div>
+
             </div>
 
           </div>

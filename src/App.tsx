@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { Preloader } from './components/Preloader';
 import { SmoothScroll } from './components/SmoothScroll';
+import { ScrollProgressBar } from './components/ScrollProgressBar';
 import { ArchitectCursor } from './components/ArchitectCursor';
 import { MarqueeBanner } from './components/MarqueeBanner';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { AboutSection } from './components/AboutSection';
 import { ServicesSection } from './components/ServicesSection';
+import { BeforeAfterSlider } from './components/BeforeAfterSlider';
 import { ProjectsShowcase } from './components/ProjectsShowcase';
 import { ExpertiseSection } from './components/ExpertiseSection';
+import { BeninMapHUD } from './components/BeninMapHUD';
 import { ProcessSection } from './components/ProcessSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
@@ -28,7 +31,7 @@ export function App() {
   };
 
   const handleSelectServiceFromSection = (serviceTitle: string) => {
-    // Préremplissage du service et défilement doux
+    // Préremplissage du service et défilement doux vers le formulaire
     setSelectedServiceForQuote(serviceTitle);
     const contactEl = document.getElementById('contact');
     if (contactEl) {
@@ -38,10 +41,13 @@ export function App() {
 
   return (
     <SmoothScroll>
-      <div className="min-h-screen bg-[#F8F9FA] text-[#151515] flex flex-col font-['Manrope',sans-serif] relative selection:bg-[#E87524]/20 selection:text-[#E87524]">
+      <div className="min-h-screen bg-[#F8F9FA] text-[#151515] flex flex-col font-['Manrope',sans-serif] relative selection:bg-[#E87524]/20 selection:text-[#E87524] overflow-x-hidden">
         
         {/* Preloader architectural d'introduction */}
         {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
+
+        {/* Barre de progression de lecture au scroll */}
+        <ScrollProgressBar />
 
         {/* Curseur laser géomètre & coordonnées en temps réel */}
         <ArchitectCursor />
@@ -63,11 +69,17 @@ export function App() {
           {/* 03 — Nos Services avec cartes Tilt 3D */}
           <ServicesSection onSelectService={handleSelectServiceFromSection} />
 
-          {/* 04 — Nos Réalisations avec Lightbox */}
-          <ProjectsShowcase />
+          {/* Comparateur Avant / Après Transformation */}
+          <BeforeAfterSlider />
+
+          {/* 04 — Nos Réalisations avec Lightbox Grand Format PC */}
+          <ProjectsShowcase onOpenQuoteWithService={(title) => handleOpenQuote(title)} />
 
           {/* 05 — Expertise & Sécurité Chantier */}
           <ExpertiseSection />
+
+          {/* Carte HUD Interactive des Pôles du Bénin */}
+          <BeninMapHUD />
 
           {/* 06 — Notre Processus en 5 étapes */}
           <ProcessSection />
@@ -79,7 +91,7 @@ export function App() {
         {/* Footer */}
         <Footer />
 
-        {/* Modale de devis rapide */}
+        {/* Modale de devis rapide — Retouchée Grand Format PC 2 Colonnes */}
         <QuoteModal
           isOpen={isQuoteOpen}
           onClose={() => setIsQuoteOpen(false)}
