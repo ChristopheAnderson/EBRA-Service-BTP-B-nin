@@ -13,6 +13,8 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { COMPANY_INFO } from '../data/content';
+import { TextReveal } from './TextReveal';
+import { MotionReveal } from './MotionReveal';
 
 interface ContactSectionProps {
   preselectedService?: string;
@@ -88,19 +90,24 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedServi
             <MessageSquare className="w-3.5 h-3.5" />
             <span>Contact & Devis Personnalisé</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#151515] tracking-tight">
-            Parlons de votre prochain chantier au Bénin
-          </h2>
+          
+          <TextReveal
+            text="Parlons de votre prochain chantier au Bénin."
+            as="h2"
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#151515] tracking-tight font-display"
+            highlightWords={['chantier', 'Bénin.']}
+          />
+
           <p className="text-base sm:text-lg text-[#5A6065]">
             Que vous ayez un plan d'architecte déjà prêt ou simplement une idée de projet, notre bureau d'études étudie votre demande sous 24 à 48 heures.
           </p>
         </div>
 
-        {/* Grille principale : Formulaire & Coordonnées / Maps */}
+        {/* Grille principale : Formulaire & Coordonnées / Maps avec MotionReveal */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
-          {/* Colonne Formulaire (7 cols) */}
-          <div className="lg:col-span-7">
+          {/* Colonne Formulaire (7 cols) avec MotionReveal */}
+          <MotionReveal animation="fade-right" className="lg:col-span-7">
             <div className="bg-white rounded-3xl p-6 sm:p-10 border border-gray-200/90 shadow-lg text-left">
               
               <div className="flex items-center justify-between pb-6 mb-6 border-b border-gray-100">
@@ -309,10 +316,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedServi
               )}
 
             </div>
-          </div>
+          </MotionReveal>
 
-          {/* Colonne Coordonnées & Localisation Google Maps (5 cols) */}
-          <div className="lg:col-span-5 space-y-6 text-left">
+          {/* Colonne Coordonnées & Localisation Google Maps (5 cols) avec MotionReveal */}
+          <MotionReveal animation="fade-left" className="lg:col-span-5 space-y-6 text-left">
             
             {/* Carte Coordonnées Directes */}
             <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/90 shadow-sm space-y-6">
@@ -453,7 +460,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preselectedServi
               </div>
             </div>
 
-          </div>
+          </MotionReveal>
 
         </div>
 

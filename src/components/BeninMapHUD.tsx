@@ -262,3 +262,4 @@ export const BeninMapHUD: React.FC = () => {
     </section>
   );
 };
+

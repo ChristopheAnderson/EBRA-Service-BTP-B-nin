@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Menu, X, ArrowUpRight, HardHat, PhoneCall } from 'lucide-react';
 import { COMPANY_INFO } from '../data/content';
 
@@ -47,7 +48,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenQuote }) => {
   ];
 
   return (
-    <header
+    <motion.header
+      initial={{ y: -70, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
           ? 'py-3.5 glass-header border-b border-gray-200/80 shadow-sm'
@@ -193,7 +197,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenQuote }) => {
           </div>
         </div>
       )}
-    </header>
+    </motion.header>
   );
 };
 

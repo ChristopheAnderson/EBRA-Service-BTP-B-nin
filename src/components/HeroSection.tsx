@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { ArrowRight, FileText, ShieldCheck, MapPin, Sparkles, Eye, Layers, Box, Cpu } from 'lucide-react';
 import { ArchitecturalCanvas, type RenderMode } from './ArchitecturalCanvas';
 import { TextReveal } from './TextReveal';
@@ -26,8 +27,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenQuote }) => {
           {/* Colonne Gauche : Titre Cinématique & CTA */}
           <div className="lg:col-span-7 space-y-6 sm:space-y-8 text-left">
             
-            {/* Tag architectural au top avec pulsation */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200/90 shadow-xs hover:border-[#E87524]/40 transition-colors">
+            {/* Tag architectural au top avec animation d'entrée */}
+            <motion.div
+              initial={{ opacity: 0, y: -25, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200/90 shadow-xs hover:border-[#E87524]/40 transition-colors"
+            >
               <span className="flex h-2.5 w-2.5 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E87524] opacity-75" />
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#E87524]" />
@@ -39,26 +45,37 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenQuote }) => {
               <span className="text-xs font-semibold text-[#E87524] flex items-center gap-1">
                 <MapPin className="w-3.5 h-3.5" /> Cotonou, Bénin
               </span>
-            </div>
+            </motion.div>
 
             {/* Titre Cinématique avec TextReveal mot à mot */}
             <div className="space-y-2">
               <TextReveal
                 text="Bâtir l'avenir du Bénin avec rigueur et excellence."
                 as="h1"
+                delay={0.2}
                 className="text-4xl sm:text-5xl xl:text-6xl font-extrabold text-[#151515] leading-[1.12] tracking-tight font-display"
                 highlightWords={['Bénin', 'excellence.']}
                 highlightClass="text-[#E87524] relative inline-block after:content-[''] after:absolute after:bottom-1 after:left-0 after:w-full after:h-2.5 after:bg-[#E87524]/15 after:-rotate-1 after:rounded-sm after:-z-10"
               />
             </div>
 
-            {/* Sous-titre descriptif soigné */}
-            <p className="text-base sm:text-lg text-[#5A6065] max-w-2xl leading-relaxed">
+            {/* Sous-titre descriptif animé */}
+            <motion.p
+              initial={{ opacity: 0, y: 30, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.75, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              className="text-base sm:text-lg text-[#5A6065] max-w-2xl leading-relaxed"
+            >
               EBRA Service BTP Bénin concrétise vos projets de construction neuve, génie civil, voirie et réhabilitation lourde. Une maîtrise d'œuvre certifiée, des matériaux rigoureusement testés et une ambition architecturale sans compromis.
-            </p>
+            </motion.p>
 
-            {/* Boutons CTA avec micro-interactions */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+            {/* Boutons CTA avec animation d'entrée douce */}
+            <motion.div
+              initial={{ opacity: 0, y: 35 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2"
+            >
               <button
                 onClick={onOpenQuote}
                 className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-[#E87524] text-white font-bold text-sm sm:text-base tracking-wide shadow-xl shadow-[#E87524]/25 hover:bg-[#D36215] transition-all duration-300 hover:shadow-2xl hover:shadow-[#E87524]/35 hover:-translate-y-1 cursor-pointer overflow-hidden"
@@ -77,10 +94,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenQuote }) => {
                 <FileText className="w-4 h-4 text-[#E87524]" />
                 <span>Découvrir nos expertises</span>
               </a>
-            </div>
+            </motion.div>
 
-            {/* 3 Piliers de réassurance BTP */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-6 border-t border-gray-200/80">
+            {/* 3 Piliers de réassurance avec cascade stagger */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
+              className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-6 border-t border-gray-200/80"
+            >
               <div className="flex items-center gap-3 p-2 rounded-xl bg-white/60 border border-gray-200/60 backdrop-blur-xs">
                 <div className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
                   <ShieldCheck className="w-5 h-5" />
@@ -110,12 +132,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenQuote }) => {
                   <p className="text-[11px] text-[#6C757D]">Planning par étapes</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
           </div>
 
-          {/* Colonne Droite : Scène 3D Interactive avec HUD & Switch de Mode */}
-          <div className="lg:col-span-5 h-[480px] sm:h-[540px] lg:h-[620px] relative">
+          {/* Colonne Droite : Scène 3D Interactive avec apparition cinématique */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.88, filter: 'blur(12px)' }}
+            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+            transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-5 h-[480px] sm:h-[540px] lg:h-[620px] relative"
+          >
             <div className="w-full h-full rounded-3xl bg-gradient-to-b from-white to-[#F1F3F5] border border-gray-200 shadow-2xl overflow-hidden relative group">
               
               {/* HUD 1 : Coordonnées Topographiques en haut à gauche */}
@@ -206,7 +233,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenQuote }) => {
               </div>
 
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </div>

@@ -119,3 +119,4 @@ export const BeforeAfterSlider: React.FC = () => {
     </section>
   );
 };
+

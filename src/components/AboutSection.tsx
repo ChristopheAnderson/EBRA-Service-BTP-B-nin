@@ -3,6 +3,7 @@ import { Award, Compass, ShieldAlert, Users, CheckCircle, Hammer, Building2 } fr
 import { STATS } from '../data/content';
 import { TextReveal } from './TextReveal';
 import { TiltCard } from './TiltCard';
+import { MotionReveal, StaggerContainer, StaggerItem } from './MotionReveal';
 
 export const AboutSection: React.FC = () => {
   return (
@@ -35,8 +36,8 @@ export const AboutSection: React.FC = () => {
         {/* Grille principale : Photos de professionnels africains & Contenu textuel */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-20">
           
-          {/* Photos architecturales réelles avec Tilt et révélation */}
-          <div className="lg:col-span-6 relative">
+          {/* Photos architecturales réelles avec MotionReveal et Tilt */}
+          <MotionReveal animation="fade-right" className="lg:col-span-6 relative">
             <div className="relative z-10 grid grid-cols-2 gap-4">
               <div className="space-y-4">
                 <TiltCard maxTilt={5}>
@@ -109,10 +110,10 @@ export const AboutSection: React.FC = () => {
                 <p className="text-sm font-bold text-white">Chantiers menés avec rigueur</p>
               </div>
             </div>
-          </div>
+          </MotionReveal>
 
           {/* Argumentaire textuel */}
-          <div className="lg:col-span-6 space-y-6 text-left">
+          <MotionReveal animation="fade-left" className="lg:col-span-6 space-y-6 text-left">
             <h3 className="text-2xl sm:text-3xl font-extrabold text-[#151515] leading-snug font-display">
               Bâtir des édifices solides qui traversent les générations
             </h3>
@@ -182,28 +183,30 @@ export const AboutSection: React.FC = () => {
               ))}
             </div>
 
-          </div>
+          </MotionReveal>
 
         </div>
 
-        {/* Chiffres & Indicateurs avec cartes 3D Tilt */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 pt-10 border-t border-gray-200/80">
+        {/* Chiffres & Indicateurs avec Stagger cascade */}
+        <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 pt-10 border-t border-gray-200/80">
           {STATS.map((stat, i) => (
-            <TiltCard key={i} maxTilt={6}>
-              <div className="p-6 sm:p-8 rounded-3xl bg-[#F8F9FA] border border-gray-200/80 text-center hover:border-[#E87524]/60 hover:bg-white transition-all shadow-xs hover:shadow-lg">
-                <div className="text-3xl sm:text-5xl font-extrabold text-[#E87524] font-display mb-1 tracking-tight">
-                  {stat.value}
+            <StaggerItem key={i}>
+              <TiltCard maxTilt={6}>
+                <div className="p-6 sm:p-8 rounded-3xl bg-[#F8F9FA] border border-gray-200/80 text-center hover:border-[#E87524]/60 hover:bg-white transition-all shadow-xs hover:shadow-lg">
+                  <div className="text-3xl sm:text-5xl font-extrabold text-[#E87524] font-display mb-1 tracking-tight">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm font-bold text-[#151515] mb-1">
+                    {stat.label}
+                  </div>
+                  <div className="text-xs text-[#6C757D]">
+                    {stat.caption}
+                  </div>
                 </div>
-                <div className="text-sm font-bold text-[#151515] mb-1">
-                  {stat.label}
-                </div>
-                <div className="text-xs text-[#6C757D]">
-                  {stat.caption}
-                </div>
-              </div>
-            </TiltCard>
+              </TiltCard>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
       </div>
     </section>
