@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-primary: #F8F9FA;
+    --text-primary: #151515;
+    --text-secondary: #5A6065;
+    --color-btp: #E87524;
+    --color-btp-hover: #D36215;
+    --color-btp-light: #FFF2E8;
+    --color-concrete: #A8ADB3;
+    --color-concrete-light: #ECEFF2;
+    --color-concrete-dark: #2A2E33;
+    --border-subtle: #E2E6EA;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Sora', 'Manrope', sans-serif;
+    letter-spacing: -0.025em;
+  }
+}
+
+/* Custom architectural utilities */
+.font-display {
+  font-family: 'Sora', sans-serif;
+}
+
+.font-body {
+  font-family: 'Manrope', sans-serif;
+}
+
+/* Grille technique de fond (Architectural grid) */
+.bg-architect-grid {
+  background-image: 
+    linear-gradient(to right, rgba(168, 173, 179, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(168, 173, 179, 0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.bg-dot-pattern {
+  background-image: radial-gradient(rgba(168, 173, 179, 0.18) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Masques et animations de révélation */
+.clip-diagonal {
+  clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+}
+
+.glass-header {
+  background: rgba(248, 249, 250, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(226, 230, 234, 0.8);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F3F5;
+}
+::-webkit-scrollbar-thumb {
+  background: #A8ADB3;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E87524;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Effets de scanline et blueprint */
+.blueprint-grid {
+  background-image: 
+    linear-gradient(rgba(232, 117, 36, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232, 117, 36, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+@keyframes laser-scan {
+  0% { top: 0%; opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.laser-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #E87524, transparent);
+  animation: laser-scan 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
