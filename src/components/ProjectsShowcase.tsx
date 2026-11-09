@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PROJECTS_LIST, type ProjectItem } from '../data/content';
 import { Eye, MapPin, Calendar, Maximize2, X, Check, Building, ArrowRight } from 'lucide-react';
 import { TiltCard } from './TiltCard';
 import { TextReveal } from './TextReveal';
+import { useLockBodyScroll } from '../hooks/useLockBodyScroll';
 
 interface ProjectsShowcaseProps {
   onOpenQuoteWithService?: (serviceName: string) => void;
@@ -11,6 +12,18 @@ interface ProjectsShowcaseProps {
 export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onOpenQuoteWithService }) => {
   const [activeFilter, setActiveFilter] = useState<string>('all');
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+
+  useLockBodyScroll(Boolean(selectedProject));
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && selectedProject) {
+        setSelectedProject(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedProject]);
 
   const filters = [
     { id: 'all', label: 'Toutes les réalisations' },
@@ -154,10 +167,19 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onOpenQuoteW
 
       </div>
 
-      {/* Modal Lightbox détails projet — Retouché Grand Format PC */}
+      {/* Modal Lightbox détails projet — Retouché Grand Format PC avec Scroll Lock & Lenis Prevent */}
       {selectedProject && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto">
-          <div className="relative w-full max-w-5xl bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-200 text-left my-auto max-h-[92vh] flex flex-col lg:flex-row">
+        <div
+          data-lenis-prevent="true"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setSelectedProject(null);
+          }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto overscroll-contain"
+        >
+          <div
+            data-lenis-prevent="true"
+            className="relative w-full max-w-5xl bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-200 text-left my-auto max-h-[92vh] flex flex-col lg:flex-row overscroll-contain"
+          >
             
             {/* Bouton Fermer */}
             <button
@@ -194,7 +216,10 @@ export const ProjectsShowcase: React.FC<ProjectsShowcaseProps> = ({ onOpenQuoteW
             </div>
 
             {/* Volet Droit PC (45%) : Panneau Technique & Spécifications */}
-            <div className="w-full lg:w-[45%] p-6 sm:p-8 overflow-y-auto max-h-[85vh] lg:max-h-[92vh] flex flex-col justify-between space-y-6">
+            <div
+              data-lenis-prevent="true"
+              className="w-full lg:w-[45%] p-6 sm:p-8 overflow-y-auto overscroll-contain max-h-[85vh] lg:max-h-[92vh] flex flex-col justify-between space-y-6"
+            >
               
               <div className="space-y-6">
                 <div>

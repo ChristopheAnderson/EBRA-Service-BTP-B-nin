@@ -22,6 +22,7 @@ export const SmoothScroll: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     lenis.on('scroll', ScrollTrigger.update);
+    (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
 
     const ticker = (time: number) => {
       lenis.raf(time * 1000);
@@ -31,6 +32,7 @@ export const SmoothScroll: React.FC<{ children: React.ReactNode }> = ({ children
     gsap.ticker.lagSmoothing(0);
 
     return () => {
+      delete (window as unknown as { __lenis?: Lenis }).__lenis;
       gsap.ticker.remove(ticker);
       lenis.destroy();
     };

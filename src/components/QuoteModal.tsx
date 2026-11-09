@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Send, CheckCircle, HardHat, AlertCircle, Phone, MapPin, ShieldCheck, Clock, ExternalLink } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { COMPANY_INFO } from '../data/content';
+import { useLockBodyScroll } from '../hooks/useLockBodyScroll';
 
 interface QuoteModalProps {
   isOpen: boolean;
@@ -29,6 +30,18 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, default
       setFormData(prev => ({ ...prev, service: defaultService }));
     }
   }, [defaultService]);
+
+  useLockBodyScroll(isOpen);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -68,8 +81,17 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, default
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto">
-      <div className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-gray-200 text-left overflow-hidden my-auto max-h-[92vh] flex flex-col md:flex-row">
+    <div
+      data-lenis-prevent="true"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto overscroll-contain"
+    >
+      <div
+        data-lenis-prevent="true"
+        className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-gray-200 text-left overflow-hidden my-auto max-h-[92vh] flex flex-col md:flex-row overscroll-contain"
+      >
         
         {/* Bouton de fermeture */}
         <button
@@ -173,8 +195,11 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({ isOpen, onClose, default
               </div>
             </div>
 
-            {/* Volet Droit (60%) : Formulaire aéré */}
-            <div className="w-full md:w-[62%] p-6 sm:p-10 overflow-y-auto max-h-[85vh] md:max-h-[92vh]">
+            {/* Volet Droit (60%) : Formulaire aéré avec scroll dédié */}
+            <div
+              data-lenis-prevent="true"
+              className="w-full md:w-[62%] p-6 sm:p-10 overflow-y-auto overscroll-contain max-h-[85vh] md:max-h-[92vh]"
+            >
               <div className="mb-6">
                 <span className="text-[11px] font-bold text-[#E87524] uppercase tracking-wider block mb-1">
                   Formulaire Devis Express
